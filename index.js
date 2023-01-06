@@ -9,7 +9,11 @@ import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
 import authRoutes from "./routes/auth.js";
+import userRoutes from "./routes/users.js";
+import postRoutes from "./routes/posts.js";
 import { register } from "./controllers/auth.js";
+import { createPost } from "./controllers/posts.js";
+import { verifyToken } from "./middleware/auth.js";
 
 // config
 const __filename = fileURLToPath(import.meta.url);
@@ -38,9 +42,13 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 app.post("/auth/register", upload.single("picture", register));
-app.use("./auth", authRoutes);
+app.post("/posts", verifyToken, upload.single("picture"), createPost);
 
-// dotenv malfunction
+app.use("./auth", authRoutes);
+app.use("./users", userRoutes);
+app.use("./posts", postRoutes);
+
+// mongoose throws error port EACCESS denied with process.env.PORT and MONGO_URL
 mongoose
   .connect(
     "mongodb+srv://testuser:GhBssh1KvvoAePAB@cluster0.4j9bna5.mongodb.net/?retryWrites=true&w=majority"
