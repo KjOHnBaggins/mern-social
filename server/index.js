@@ -47,9 +47,9 @@ const upload = multer({ storage });
 app.post("/auth/register", upload.single("picture", register));
 app.post("/posts", verifyToken, upload.single("picture"), createPost);
 
-app.use("./auth", authRoutes);
-app.use("./users", userRoutes);
-app.use("./posts", postRoutes);
+app.use("/auth", authRoutes);
+app.use("/users", userRoutes);
+app.use("/posts", postRoutes);
 
 // mongoose throws error port EACCESS denied with process.env.PORT and MONGO_URL
 mongoose
