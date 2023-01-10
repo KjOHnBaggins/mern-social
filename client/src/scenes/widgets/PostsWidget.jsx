@@ -13,7 +13,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     });
-    const date = await response.json();
+    const data = await response.json();
     dispatch(setPosts({ posts: data }));
   };
 
@@ -63,3 +63,5 @@ const PostsWidget = ({ userId, isProfile = false }) => {
     </>
   );
 };
+
+export default PostsWidget;
