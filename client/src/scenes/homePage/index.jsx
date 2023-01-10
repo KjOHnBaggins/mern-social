@@ -7,9 +7,8 @@ import PostsWidget from "../widgets/PostsWidget.jsx";
 import AdvertWidget from "../widgets/AdvertWidget.jsx";
 import FriendList from "../widgets/FriendList.jsx";
 
-const HomePage = () => {
+const HomePage = ({ _id, picturePath }) => {
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
-  const { _id, picturePath } = useSelector((state) => state.user);
 
   return (
     <Box>

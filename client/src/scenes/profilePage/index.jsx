@@ -8,7 +8,7 @@ import MyPostWidget from "../widgets/MyPostWidget.jsx";
 import PostsWidget from "../widgets/PostsWidget.jsx";
 import UserWidget from "../widgets/UserWidget.jsx";
 
-const ProfilePage = () => {
+const ProfilePage = ({ _id, picturePath }) => {
   const [user, setUser] = useState(null);
   const { userId } = useParams();
   const token = useSelector((state) => state.token);
@@ -48,7 +48,7 @@ const ProfilePage = () => {
           flexBasis={isNonMobileScreens ? "42%" : undefined}
           mt={isNonMobileScreens ? undefined : "2rem"}
         >
-          <MyPostWidget picturePath={user.picturePath} />
+          <MyPostWidget picturePath={picturePath} />
           <Box m="2rem 0" />
           <PostsWidget userId={userId} isProfile />
         </Box>
