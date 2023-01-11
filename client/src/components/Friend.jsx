@@ -12,16 +12,29 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // this is always loggedInUser id
   const { _id } = useSelector((state) => state.user);
-  const token = useSelector((state) => state.token);
+  // friend list which changes according to the user display on screen
   const friends = useSelector((state) => state.user.friends);
+
+  const token = useSelector((state) => state.token);
 
   const primaryLight = palette.primary.light;
   const primaryDark = palette.primary.dark;
   const main = palette.neutral.main;
   const medium = palette.neutral.medium;
 
-  const isFriend = friends.find((friend) => friend._id === friendId);
+  let isFriend;
+  //this works only for home page
+  isFriend = friends.find((friend) => friend._id === friendId);
+
+  //checks if we in profile page
+  if (friends.map((friend) => friend._id).includes(_id)) {
+    isFriend = friends
+      .filter((friend) => friend._id === _id)
+      .map((friend) => friend._id)
+      .includes(_id);
+  }
 
   const patchFriend = async () => {
     const response = await fetch(
@@ -66,16 +79,18 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
           </Typography>
         </Box>
       </FlexBetween>
-      <IconButton
-        onClick={() => patchFriend()}
-        sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
-      >
-        {isFriend ? (
-          <PersonRemoveOutlined sx={{ color: primaryDark }} />
-        ) : (
-          <PersonAddOutlined sx={{ color: primaryDark }} />
-        )}
-      </IconButton>
+      {_id !== friendId && (
+        <IconButton
+          onClick={() => patchFriend()}
+          sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
+        >
+          {isFriend ? (
+            <PersonRemoveOutlined sx={{ color: primaryDark }} />
+          ) : (
+            <PersonAddOutlined sx={{ color: primaryDark }} />
+          )}
+        </IconButton>
+      )}
     </FlexBetween>
   );
 };
