@@ -6,9 +6,12 @@ import Friend from "../../components/Friend.jsx";
 import WidgetWrapper from "../../components/WidgetWrapper";
 
 const FriendList = ({ userId }) => {
+  //the friendlist bug is only for profile page
+  //the potentail bug fixes are conditioning the friends or dependency array in useEffect
   const dispatch = useDispatch();
   const { palette } = useTheme();
   const token = useSelector((state) => state.token);
+  //state.user.friends isnt accurate for profile page, but is accurate for home page
   const friends = useSelector((state) => state.user.friends);
 
   const getFriends = async () => {
@@ -25,7 +28,7 @@ const FriendList = ({ userId }) => {
 
   useEffect(() => {
     getFriends();
-  }, []);
+  }, [friends]);
 
   return (
     <WidgetWrapper>
@@ -38,15 +41,19 @@ const FriendList = ({ userId }) => {
         Friend List
       </Typography>
       <Box display="flex" flexDirection="column" gap="1.5rem">
-        {friends.map((friend) => (
-          <Friend
-            key={friend._id}
-            friendId={friend._id}
-            name={`${friend.firstName} ${friend.lastName}`}
-            subtitle={friend.occupation}
-            userPicturePath={friend.picturePath}
-          />
-        ))}
+        {friends.length > 0 ? (
+          friends.map((friend) => (
+            <Friend
+              key={friend._id}
+              friendId={friend._id}
+              name={`${friend.firstName} ${friend.lastName}`}
+              subtitle={friend.occupation}
+              userPicturePath={friend.picturePath}
+            />
+          ))
+        ) : (
+          <Typography sx={{ mx: "auto" }}>No Friends</Typography>
+        )}
       </Box>
     </WidgetWrapper>
   );

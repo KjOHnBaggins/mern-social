@@ -11,7 +11,6 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   // this is always loggedInUser id
   const { _id } = useSelector((state) => state.user);
   // friend list which changes according to the user display on screen
@@ -28,7 +27,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   //this works only for home page
   isFriend = friends.find((friend) => friend._id === friendId);
 
-  //checks if we in profile page
+  //checks if we in profile page, this logic only affects the icon state
   if (friends.map((friend) => friend._id).includes(_id)) {
     isFriend = friends
       .filter((friend) => friend._id === _id)
@@ -81,7 +80,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
       </FlexBetween>
       {_id !== friendId && (
         <IconButton
-          onClick={() => patchFriend()}
+          onClick={patchFriend}
           sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
         >
           {isFriend ? (
